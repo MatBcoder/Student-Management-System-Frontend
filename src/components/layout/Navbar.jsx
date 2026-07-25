@@ -3,7 +3,7 @@ import {NavLink} from "react-router-dom";
 function Navbar() {
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-          <div classname= "container">
+          <div className= "container">
                 <NavLink className="navbar-brand" to="/">SMS Portal</NavLink>
                 <div className= "navbar-nav">
                     <NavLink to="/" className={({ isActive }) =>isActive ? "nav-link active fw-bold" : "nav-link"}>Home</NavLink>
