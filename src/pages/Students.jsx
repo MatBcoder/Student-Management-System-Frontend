@@ -7,6 +7,22 @@ function Students(){
     const [students, setStudents] = useState([]);
     const navigate = useNavigate();
 
+    const handleDelete = (studentNumber) => { const confirm= window.confirm("Are you sure you want to delete this student?");
+        if(!confirm){
+            return;
+        }
+
+        StudentService.deleteStudent(studentNumber)
+        .then(() => {console.log("Student Successfully deleted."); 
+            setStudents(currentStudents =>
+                currentStudents.filter(
+                    student => student.studentNumber !== studentNumber
+                )
+            );})
+        .catch((error) => {console.error("Error deleting student:", error);});
+    };
+
+
     useEffect (() => {
         StudentService.getStudents()
         .then((response) => {
@@ -49,7 +65,7 @@ function Students(){
                                 >
                                     Edit
                                 </button>
-                                <button className="btn btn-danger btn-sm">Delete</button>
+                                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(student.studentNumber)}>Delete</button>
                             </td>
                         </tr>
                     ))}

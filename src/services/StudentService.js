@@ -11,6 +11,10 @@ const StudentService = {
 
     updateStudent(studentNumber, student){
         return api.put(`/students/${studentNumber}`, student);
+    },
+
+    deleteStudent(studentNumber){
+        return api.delete(`/students/${studentNumber}`);
     }
 };
 
