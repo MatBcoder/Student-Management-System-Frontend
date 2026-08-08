@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
+import {useNavigate} from "react-router-dom";
+
 import StudentService from "../services/StudentService";
 
 function Students(){
     const [students, setStudents] = useState([]);
+    const navigate = useNavigate();
 
     useEffect (() => {
         StudentService.getStudents()
@@ -28,17 +31,26 @@ function Students(){
                         <th>Last Name</th>
                         <th>Course</th>
                         <th>Age</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     {students.map(student => (
-                        <tr key= {student.id}>
+                        <tr key= {student.studentNumber}>
                             <td>{student.studentNumber}</td>
                             <td>{student.firstName}</td>
                             <td>{student.lastName}</td>
                             <td>{student.course}</td>
                             <td>{student.age}</td>
+                            <td>
+                                <button className="btn btn-primary btn-sm me-2" 
+                                    onClick={() => navigate(`/students/edit/${student.studentNumber}`)}
+                                >
+                                    Edit
+                                </button>
+                                <button className="btn btn-danger btn-sm">Delete</button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
