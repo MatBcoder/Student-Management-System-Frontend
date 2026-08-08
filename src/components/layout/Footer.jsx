@@ -1,7 +1,7 @@
 function Footer (){
     return (
         <footer>
-            <p>&copy; 2023 Student Management System. All rights reserved.</p>
+            <p>&copy; 2026 Student Management System. All rights reserved.</p>
         </footer>
     );
 }

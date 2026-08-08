@@ -15,6 +15,10 @@ const StudentService = {
 
     deleteStudent(studentNumber){
         return api.delete(`/students/${studentNumber}`);
+    },
+
+    addStudent(student){
+        return api.post("/students", student);
     }
 };
 
