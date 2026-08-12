@@ -2,6 +2,7 @@ import { useState } from "react";
 import {useNavigate} from "react-router-dom";
 
 import StudentService from "../services/StudentService";
+import { validateStudent } from "../utils/studentValidation";
 
 function AddStudent(){
     
@@ -16,20 +17,7 @@ function AddStudent(){
     });
 
     const [errors, setErrors] = useState({});
-
-    const validate = () => {
-        const newErrors = {};
-        if(!student.firstName.trim()) newErrors.firstName= "First Name is required.";
-        if(!student.lastName.trim()) newErrors.lastName= "Last Name is required.";
-        if(!student.course.trim()) newErrors.course= "Course is required.";
-        if(!student.age) 
-            newErrors.age= "Age is required.";
-        else if(student.age < 16)
-            newErrors.age= "Age must be at least 16.";
-
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    }
+    
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -42,9 +30,12 @@ function AddStudent(){
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        if(!validate())
-            return;
+        const validationErrors = validateStudent(student);
+        setErrors(validationErrors);
 
+        if (Object.keys(validationErrors).length > 0) {
+            return;
+        }
         StudentService.addStudent(student)
             .then(() => {
                 console.log("Student successfully added.");
