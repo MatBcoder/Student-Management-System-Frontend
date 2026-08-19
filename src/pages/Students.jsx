@@ -6,6 +6,9 @@ import StudentTable from "../components/student/StudentTable";
 
 function Students(){
     const [students, setStudents] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+
     const navigate = useNavigate();
 
     const handleDelete = (studentNumber) => { const isConfirmed= window.confirm("Are you sure you want to delete this student?");
@@ -35,14 +38,35 @@ function Students(){
         })
         .catch((error) => {
             console.error("Error fetching students:", error);
+            setError("Failed to fetch students. Please try again later.");
+        })
+        .finally(() => {
+            setLoading(false);
         });
+
     }, []);
+
+    if(loading){
+        return (
+            <div className="container mt-4">
+                <h3>Loading students...</h3>
+            </div>
+        );
+    }
+
+    if(error){
+        return(
+            <div className="container mt-4">
+                <h3 className="alert alert-danger">{error}</h3>
+            </div>
+        )
+    }
 
     return (
         <div className="container mt-4">
             <h1>Students List</h1>
             <p className= "text-muted">Total Students: {students.length}</p>
-            
+
             <StudentTable
                 students={students}
                 onEdit={handleEdit}
