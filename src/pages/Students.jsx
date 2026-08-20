@@ -9,6 +9,13 @@ function Students(){
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
+    const [page, setPage] = useState(0);
+    const [size] = useState(5);
+    const [totalPages, setTotalPages] = useState(0);
+    const [totalElements, setTotalElements] = useState(0);
+    const [sortBy, setSortBy] = useState("studentNumber");
+    const [direction, setDirection] = useState("asc");
+
     const navigate = useNavigate();
 
     const handleDelete = (studentNumber) => { const isConfirmed= window.confirm("Are you sure you want to delete this student?");
@@ -31,10 +38,15 @@ function Students(){
 
 
     useEffect (() => {
-        StudentService.getStudents()
+        setLoading(true);
+        setError("");
+
+        StudentService.getStudents(page, size, sortBy, direction)
         .then((response) => {
-            console.log("Fetched students:", response.data);
-            setStudents(response.data);
+            console.log("Fetched students:", response.data.content);
+            setStudents(response.data.content);
+            setTotalPages(response.data.totalPages);
+            setTotalElements(response.data.totalElements);
         })
         .catch((error) => {
             console.error("Error fetching students:", error);
@@ -44,7 +56,7 @@ function Students(){
             setLoading(false);
         });
 
-    }, []);
+    }, [page, size, sortBy, direction]);
 
     if(loading){
         return (
@@ -65,13 +77,20 @@ function Students(){
     return (
         <div className="container mt-4">
             <h1>Students List</h1>
-            <p className= "text-muted">Total Students: {students.length}</p>
+            <p className= "text-muted">Total Students: {totalElements}</p>
 
             <StudentTable
                 students={students}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
             />
+            
+            <div className="d-flex justify-content-between align-items-center mt-3">
+                <button className="btn btn-secondary" disabled={page === 0} onClick= {() => setPage(page - 1)}>Previous</button>
+                <span>Page {page + 1} of {totalPages}</span>
+                <button className="btn btn-secondary" disabled={page + 1 >= totalPages} onClick= {() => setPage(page + 1)}>Next</button>
+
+            </div>
 
         </div>
     );

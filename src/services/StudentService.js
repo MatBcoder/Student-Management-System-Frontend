@@ -1,8 +1,15 @@
 import api from "../api/axios";
 
 const StudentService = {
-    getStudents() {
-        return api.get("/students");
+    getStudents(page, size, sortBy, direction) {
+        return api.get("/students", {
+            params: {
+                page,
+                size,
+                sortBy,
+                direction
+            }
+        });
     },
 
     getStudentByStudentNumber(studentNumber) {
