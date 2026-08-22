@@ -1,13 +1,22 @@
-function StudentTable({ students, onEdit, onDelete }) {
+function StudentTable({ students, onEdit, onDelete, onSort, sortBy, direction }) {
+
+    const getSortIndicator = (column) => {
+        if (sortBy !== column) {
+            return "";
+        }
+
+        return direction === "asc" ? " ↑" : " ↓";
+    };
+
     return (
         <table className = "table table-striped table-hover">
                 <thead className= "table-dark">
                     <tr>
-                        <th>Student Number</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Course</th>
-                        <th>Age</th>
+                        <th onClick={() => onSort("studentNumber")}>Student Number {getSortIndicator("studentNumber")}</th>
+                        <th onClick={() => onSort("firstName")}>First Name {getSortIndicator("firstName")}</th>
+                        <th onClick={() => onSort("lastName")}>Last Name {getSortIndicator("lastName")}</th>
+                        <th onClick={() => onSort("course")}>Course {getSortIndicator("course")}</th>
+                        <th onClick={() => onSort("age")}>Age {getSortIndicator("age")}</th>
                         <th>Action</th>
                     </tr>
                 </thead>

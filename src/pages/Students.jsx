@@ -9,6 +9,7 @@ function Students(){
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
+    //for pagination & sorting
     const [page, setPage] = useState(0);
     const [size] = useState(5);
     const [totalPages, setTotalPages] = useState(0);
@@ -34,6 +35,17 @@ function Students(){
     };
     const handleEdit = (studentNumber) => {
         navigate(`/students/edit/${studentNumber}`);
+    }
+
+    const handleSort = (column) =>{
+        if(sortBy===column){
+            setDirection(direction === "asc" ? "desc" : "asc");
+        }
+        else{
+            setSortBy(column);
+            setDirection("asc");
+        }
+        setPage(0); //resets pagination
     }
 
 
@@ -83,6 +95,9 @@ function Students(){
                 students={students}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
+                onSort={handleSort}
+                sortBy={sortBy}
+                direction={direction}
             />
             
             <div className="d-flex justify-content-between align-items-center mt-3">
