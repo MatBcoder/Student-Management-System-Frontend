@@ -55,6 +55,12 @@ function Students(){
         setPage(0);
     }
 
+    const handleClearSearch= ()=>{
+        setSearchInput("");
+        setKeyword("");
+        setPage(0);
+    }
+
 
     useEffect (() => {
         setLoading(true);
@@ -108,6 +114,9 @@ function Students(){
                     onChange={(event) => setSearchInput(event.target.value)}
                 />
                 <button className="btn btn-primary" onClick={handleSearch}>Search</button>
+                {keyword !== "" && (
+                    <button className="btn btn-secondary" onClick={handleClearSearch}>Clear</button>
+                )}
             </div>
 
             {students.length === 0 ?(
