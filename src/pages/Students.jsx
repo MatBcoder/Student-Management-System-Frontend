@@ -9,13 +9,15 @@ function Students(){
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
-    //for pagination & sorting
+    //for pagination & sorting & searching
     const [page, setPage] = useState(0);
     const [size] = useState(5);
     const [totalPages, setTotalPages] = useState(0);
     const [totalElements, setTotalElements] = useState(0);
     const [sortBy, setSortBy] = useState("studentNumber");
     const [direction, setDirection] = useState("asc");
+    const [keyword, setKeyword] = useState(""); //sent to the backend for searching
+    const [searchInput, setSearchInput] = useState(""); // typed by user
 
     const navigate = useNavigate();
 
@@ -48,12 +50,17 @@ function Students(){
         setPage(0); //resets pagination
     }
 
+    const handleSearch = ()=>{
+        setKeyword(searchInput);
+        setPage(0);
+    }
+
 
     useEffect (() => {
         setLoading(true);
         setError("");
 
-        StudentService.getStudents(page, size, sortBy, direction)
+        StudentService.getStudents(page, size, sortBy, direction, keyword)
         .then((response) => {
             console.log("Fetched students:", response.data.content);
             setStudents(response.data.content);
@@ -68,7 +75,7 @@ function Students(){
             setLoading(false);
         });
 
-    }, [page, size, sortBy, direction]);
+    }, [page, size, sortBy, direction, keyword]);
 
     if(loading){
         return (
@@ -90,6 +97,18 @@ function Students(){
         <div className="container mt-4">
             <h1>Students List</h1>
             <p className= "text-muted">Total Students: {totalElements}</p>
+
+            
+            <div className= "input-group mb-3">
+                <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Search students..."
+                    value={searchInput}
+                    onChange={(event) => setSearchInput(event.target.value)}
+                />
+                <button className="btn btn-primary" onClick={handleSearch}>Search</button>
+            </div>
 
             <StudentTable
                 students={students}
