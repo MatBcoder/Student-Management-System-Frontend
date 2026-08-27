@@ -110,21 +110,27 @@ function Students(){
                 <button className="btn btn-primary" onClick={handleSearch}>Search</button>
             </div>
 
-            <StudentTable
-                students={students}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-                onSort={handleSort}
-                sortBy={sortBy}
-                direction={direction}
-            />
+            {students.length === 0 ?(
+                <p>No students found.</p>
+            ) : (
+                <StudentTable
+                    students={students}
+                    onEdit={handleEdit}
+                    onDelete={handleDelete}
+                    onSort={handleSort}
+                    sortBy={sortBy}
+                    direction={direction}
+                />
+            )}
             
-            <div className="d-flex justify-content-between align-items-center mt-3">
-                <button className="btn btn-secondary" disabled={page === 0} onClick= {() => setPage(page - 1)}>Previous</button>
-                <span>Page {page + 1} of {totalPages}</span>
-                <button className="btn btn-secondary" disabled={page + 1 >= totalPages} onClick= {() => setPage(page + 1)}>Next</button>
+            {students.length > 0 && (
+                <div className="d-flex justify-content-between align-items-center mt-3">
+                    <button className="btn btn-secondary" disabled={page === 0} onClick= {() => setPage(page - 1)}>Previous</button>
+                    <span>Page {page + 1} of {totalPages}</span>
+                    <button className="btn btn-secondary" disabled={page + 1 >= totalPages} onClick= {() => setPage(page + 1)}>Next</button>
 
-            </div>
+                </div>
+            )}
 
         </div>
     );
