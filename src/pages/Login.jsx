@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AuthService from "../services/AuthService";
 
 function Login(){
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleSubmit=async (event) => {
         event.preventDefault();
@@ -11,7 +13,7 @@ function Login(){
             const response = await AuthService.login(username, password);//send credentials to Spring Boot API
             sessionStorage.setItem("token", response.data); //store the token in session storage
             console.log("Login successful. Token stored in session storage.");
-            
+            navigate("/"); //redirect to the home page
         } 
         catch (error) {
             console.error("Login failed:", error);
