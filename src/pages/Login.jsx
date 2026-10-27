@@ -11,8 +11,10 @@ function Login(){
         event.preventDefault();
         try {
             const response = await AuthService.login(username, password);//send credentials to Spring Boot API
-            sessionStorage.setItem("token", response.data); //store the token in session storage
-            console.log("Login successful. Token stored in session storage.");
+            //sessionStorage.setItem("token", response.data); //store the token in session storage
+            sessionStorage.setItem("token", response.data.token); 
+            sessionStorage.setItem("role", response.data.role);
+            console.log("Login successful. Role: ", response.data.role);
             navigate("/"); //redirect to the home page
         } 
         catch (error) {
