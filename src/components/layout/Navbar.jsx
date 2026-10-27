@@ -1,14 +1,34 @@
-import {NavLink} from "react-router-dom";
+import { useState } from "react";
+import {NavLink, useNavigate} from "react-router-dom";
 
 function Navbar() {
+    const navigate = useNavigate();
+    
+    const [isAuthenticated, setIsAuthenticated] = useState(() => Boolean(sessionStorage.getItem("token"))); // Check if token exists in session storage
+
+    const handleLogout = () => {
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("role");
+        setIsAuthenticated(false);
+        navigate("/login", { replace: true }); // Redirect to login page after logout
+    };
+
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
           <div className= "container">
                 <NavLink className="navbar-brand" to="/">SMS Portal</NavLink>
+
                 <div className= "navbar-nav">
-                    <NavLink to="/" className={({ isActive }) =>isActive ? "nav-link active fw-bold" : "nav-link"}>Home</NavLink>
-                    <NavLink to="/students" end className={({ isActive }) =>isActive ? "nav-link active fw-bold" : "nav-link"}>Students</NavLink>
-                    <NavLink to="/students/add" className={({ isActive }) =>isActive ? "nav-link active fw-bold" : "nav-link"}>Add Student</NavLink>
+                    {isAuthenticated && (
+                        <>
+                            <NavLink to="/" className={({ isActive }) =>isActive ? "nav-link active fw-bold" : "nav-link"}>Home</NavLink>
+                            <NavLink to="/students" end className={({ isActive }) =>isActive ? "nav-link active fw-bold" : "nav-link"}>Students</NavLink>
+                            <NavLink to="/students/add" className={({ isActive }) =>isActive ? "nav-link active fw-bold" : "nav-link"}>Add Student</NavLink>
+                            <button type="button" className="btn btn-outline-light" onClick={handleLogout}>
+                                Logout
+                            </button>
+                        </>
+                    )}
                 </div>
 
             </div>
@@ -18,8 +38,4 @@ function Navbar() {
 
 export default Navbar;
 
-
-{/* <NavLink className = "nav-link" to="/">Home</NavLink>
-    <NavLink className = "nav-link" to="/students">Students</NavLink>
-    <NavLink className = "nav-link" to="/students/add">Add Student</NavLink>*/}
                 
