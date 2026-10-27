@@ -5,6 +5,8 @@ import StudentService from "../services/StudentService";
 import StudentTable from "../components/student/StudentTable";
 
 function Students(){
+    const role = sessionStorage.getItem("role");
+
     const [students, setStudents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -129,6 +131,7 @@ function Students(){
                     onSort={handleSort}
                     sortBy={sortBy}
                     direction={direction}
+                    role={role}
                 />
             )}
             

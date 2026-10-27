@@ -14,10 +14,14 @@ function App() {
 
             <Route element={<ProtectedRoute />}>
                 <Route path="/" element={<Layout />}>
-                    <Route path="/" element={<Home />} />
+                    <Route index element={<Home />} />
                     <Route path="/students" element={<Students />} />
-                    <Route path="/students/add" element={<AddStudent />} />
-                    <Route path="/students/edit/:studentNumber" element={<EditStudent />} />
+
+                    <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
+                        <Route path="/students/add" element={<AddStudent />} />
+                        <Route path="/students/edit/:studentNumber" element={<EditStudent />} />
+                    </Route>
+                    
                 </Route>
             </Route>
             

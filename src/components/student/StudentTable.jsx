@@ -1,4 +1,4 @@
-function StudentTable({ students, onEdit, onDelete, onSort, sortBy, direction }) {
+function StudentTable({ students, onEdit, onDelete, onSort, sortBy, direction, role}) {
 
     const getSortIndicator = (column) => {
         if (sortBy !== column) {
@@ -17,7 +17,9 @@ function StudentTable({ students, onEdit, onDelete, onSort, sortBy, direction })
                         <th onClick={() => onSort("lastName")}>Last Name {getSortIndicator("lastName")}</th>
                         <th onClick={() => onSort("course")}>Course {getSortIndicator("course")}</th>
                         <th onClick={() => onSort("age")}>Age {getSortIndicator("age")}</th>
-                        <th>Action</th>
+                        {role === "ADMIN" && (
+                            <th>Action</th>
+                        )}
                     </tr>
                 </thead>
 
@@ -29,11 +31,15 @@ function StudentTable({ students, onEdit, onDelete, onSort, sortBy, direction })
                             <td>{student.lastName}</td>
                             <td>{student.course}</td>
                             <td>{student.age}</td>
-                            <td>
-                                <button className="btn btn-primary btn-sm me-2" onClick={() => onEdit(student.studentNumber)}>Edit</button>
-                                                           
-                                <button className="btn btn-danger btn-sm" onClick={() => onDelete(student.studentNumber)}>Delete</button>
-                            </td>
+                            
+                            
+                            {role === "ADMIN" && (
+                                <td>
+                                    <button className="btn btn-primary btn-sm me-2" onClick={() => onEdit(student.studentNumber)}>Edit</button>
+                                                               
+                                    <button className="btn btn-danger btn-sm" onClick={() => onDelete(student.studentNumber)}>Delete</button>
+                                </td>
+                            )}
                         </tr>
                     ))}
                 </tbody>
